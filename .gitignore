@@ -1,0 +1,24 @@
+# Compiled Python files
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# Dependencies
+/.venv/
+/.env/
+/.venv3/
+/.python-version
+
+# Local development settings
+local_settings.py
+
+# Logs
+logs/
+*.log
+
+# Other files and folders
+.idea/
+__pycache__/
+db.sqlite3
