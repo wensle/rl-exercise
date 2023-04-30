@@ -1,0 +1,12 @@
+batch_size: 64
+lr: 0.0001
+env: FlappyBird-v0
+size_hidden_layers: 512
+gamma: 1.0
+sync_rate: 250
+replay_size: 500000
+eps_start: 1.0
+eps_end: 0.02
+eps_last_frame: 15000
+episode_length: 5000
+warm_start_steps: 500000

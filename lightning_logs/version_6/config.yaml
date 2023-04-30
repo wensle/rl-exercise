@@ -1,0 +1,76 @@
+# lightning.pytorch==2.0.1.post0
+seed_everything: true
+trainer:
+  accelerator: auto
+  strategy: auto
+  devices: auto
+  num_nodes: 1
+  precision: 32-true
+  logger:
+    class_path: lightning.pytorch.loggers.CSVLogger
+    init_args:
+      save_dir: /home/wensley/s6/rl
+      name: lightning_logs
+      version: null
+      prefix: ''
+      flush_logs_every_n_steps: 100
+  callbacks: null
+  fast_dev_run: false
+  max_epochs: null
+  min_epochs: null
+  max_steps: 1000
+  min_steps: null
+  max_time: 00:00:15:00
+  limit_train_batches: null
+  limit_val_batches: null
+  limit_test_batches: null
+  limit_predict_batches: null
+  overfit_batches: 0.0
+  val_check_interval: null
+  check_val_every_n_epoch: 1
+  num_sanity_val_steps: null
+  log_every_n_steps: 1
+  enable_checkpointing: true
+  enable_progress_bar: null
+  enable_model_summary: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: null
+  gradient_clip_algorithm: null
+  deterministic: null
+  benchmark: null
+  inference_mode: true
+  use_distributed_sampler: true
+  profiler: null
+  detect_anomaly: false
+  barebones: false
+  plugins: null
+  sync_batchnorm: false
+  reload_dataloaders_every_n_epochs: 0
+  default_root_dir: /home/wensley/s6/rl
+model:
+  net:
+    class_path: rl.networks.Mlp
+    init_args:
+      obs_size: 12
+      n_actions: 2
+      hidden_size: 512
+  target_net:
+    class_path: rl.networks.Mlp
+    init_args:
+      obs_size: 12
+      n_actions: 2
+      hidden_size: 512
+  batch_size: 32
+  lr: 0.1
+  env: FlappyBird-v0
+  size_hidden_layers: 512
+  gamma: 1.0
+  sync_rate: 1000
+  replay_size: 5000
+  warm_start_size: 5000
+  eps_start: 1.0
+  eps_end: 0.02
+  eps_last_frame: 15000
+  episode_length: 5000
+  warm_start_steps: 5000
+ckpt_path: null
