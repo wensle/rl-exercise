@@ -1,31 +1,40 @@
 import argparse
-import flappy_bird_gymnasium  # noqa
-import gymnasium  # noqa
 
 # from gymnasium.utils.save_video import save_video
-import pygame
-
+import flappy_bird_gymnasium  # noqa
+from gymnasium.wrappers import RenderCollection
+from gymnasium.utils.save_video import save_video
 from rl.models import DQN
-from rl.networks import DeepMlpVersion0, Mlp
+from rl.networks import Mlp
 
 
-def play_with_gui(num_epoch, model: DQN) -> None:
-    for _ in range(num_epoch):
-        clock = pygame.time.Clock()
+def play_validation_with_vid(num_epoch, model: DQN) -> None:
+    for episode_index in range(num_epoch):
+        # clock = pygame.time.Clock()
         episode_score = 0
         episode_reward = 0
+        env = RenderCollection(model.env)
+        model.agent.env = env
         model.agent.reset()
         while True:
-            model.env.render()
-
             # Getting action
             reward, done, score = model.agent.play_step(model.net, epsilon=0.0)
             episode_score += score
             episode_reward += reward
 
-            clock.tick(60)
+            # clock.tick(60)
             if done:
-                model.env.render()
+                frames = env.render()
+                save_video(
+                    frames,
+                    "videos",
+                    episode_trigger=lambda _: True,
+                    fps=45,
+                    episode_index=episode_index,
+                    name_prefix="validation",
+                )
+                # model.env.render()
+                model.agent.reset()
                 break
 
 
@@ -64,8 +73,8 @@ def main():
     parser.add_argument(
         "--checkpoint-path",
         type=str,
-        required=True,
         help="Path to the model checkpoint",
+        default="/home/wensley/s6/rl/lightning_logs/version_18/checkpoints/epoch=29-step=28152.ckpt",
     )
     parser.add_argument(
         "--num-episodes",
@@ -88,7 +97,7 @@ def main():
     model.eval()
     model.freeze()
 
-    play_with_gui(num_episodes, model)
+    play_validation_with_vid(num_episodes, model)
 
 
 if __name__ == "__main__":

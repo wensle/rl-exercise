@@ -67,7 +67,9 @@ class DQN(L.LightningModule):
         super().__init__()
         self.save_hyperparameters(ignore=["net", "target_net"])
 
-        self.env = gymnasium.make(self.hparams.env)
+        self.env = gymnasium.make(
+            self.hparams.env, audio_on=False, render_mode="rgb_array"
+        )
 
         self.net = net.apply(lambda m: weights_init(m, std_dev=0.01))
         self.target_net = target_net.apply(lambda m: weights_init(m, std_dev=0.01))
@@ -123,6 +125,7 @@ class DQN(L.LightningModule):
             self.total_reward = self.episode_reward
             self.episode_reward = 0
             self.episode += 1
+            self.agent.reset()
 
         # Soft update of target network
         if self.global_step % self.hparams.sync_rate == 0:

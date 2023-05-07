@@ -100,8 +100,8 @@ class Agent:
         self.state = experience.next_observation
         self.score = experience.score
 
-        if experience.terminated or experience.truncated:
-            self.reset()
+        # if experience.terminated or experience.truncated:
+        #     self.reset()
 
         return (
             experience.reward,
