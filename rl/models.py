@@ -12,6 +12,7 @@ from rl.agents import Agent
 from rl.datasets import RLDataset
 from rl.losses import dqn_mse_loss
 from rl.memory import ReplayBuffer
+from rl.utils import weights_init
 
 
 class DQN(L.LightningModule):
@@ -68,8 +69,8 @@ class DQN(L.LightningModule):
 
         self.env = gymnasium.make(self.hparams.env)
 
-        self.net = net
-        self.target_net = target_net
+        self.net = net.apply(lambda m: weights_init(m, std_dev=0.01))
+        self.target_net = target_net.apply(lambda m: weights_init(m, std_dev=0.01))
         self.dqn_mse_loss = dqn_mse_loss
 
         self.buffer = ReplayBuffer(self.hparams.replay_size)
